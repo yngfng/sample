@@ -1,6 +1,10 @@
 #! /usr/bin/env python
 
 
+#= VBox ================================================
+vbox = gtk.VBox(False, 20)
+self.window.add(vbox)
+vbox.pack_start(button, True, True, 2)
 #= Window ================================================
 super(PyApp, self).__init__()
 self.set_title("Buttons")
@@ -70,8 +74,17 @@ darea.connect("expose-event", self.expose)
         
 
 #= import ================================================
+#= color ================================================
+gtk.gdk.Color
+colormap.alloc_color('red')
+colormap.alloc_color('green')
+colormap.alloc_color('blue')
+colormap.alloc_color('blue')
 
-
+#= pixfuf ================================================
+gtk.gdk.Pixbuf
+folderpb = gtk.gdk.pixbuf_from_file('folder.xpm')
+filepb = gtk.gdk.pixbuf_from_file('file.xpm')
 
 
 

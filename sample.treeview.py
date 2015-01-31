@@ -21,63 +21,6 @@ def delete_event(self, widget, event, data=None):
     return False
 
 #= treeview ================================================
-#- liststore -------------------------------------------
-bugdata="""120595 NEW Custom GtkTreeModelFilter wrappers need
-121339 RESO dsextras.py installation directory is incorrect
-121611 RESO argument is guint, should be guint32"""
-for line in bugdata.split('\n'):
-    l = line.split()
-    self.liststore.append([int(l[0]), l[1], ' '.join(l[2:])])
-
-self.liststore = gtk.ListStore(int, str, str)
-self.b0.connect_object('clicked', gtk.ListStore.clear, self.liststore)
-
-
-
-#- treestore -------------------------------------------
-piter = self.treestore.append(None, ['parent %i' % parent])
-self.treestore.append(piter, ['child %i of parent %i' % (child, parent)])
-import random
-rand = random.Random()
-i0 = self.model().append([rand.randint(0, 1000),
-                          rand.randint(0, 1000000),
-                          rand.randint(-10000, 10000)])
-
-
-#- sort model -------------------------------------------
-sortmodel = gtk.TreeModelSort(liststore)
-sortmodel.set_sort_column_id(n, gtk.SORT_ASCENDING)
-treeview = gtk.TreeView(win.sortmodel)
-
-#- filter model -------------------------------------------
-modelfilter = liststore.filter_new()
-modelfilter.refilter()
-modelfilter.set_visible_func(self.visible_cb, self.show_states)
-def visible_cb(self, model, iter, data):
-    return model.get_value(iter, 1) in data
-
-#- cellranderertext -------------------------------------------
-cell = gtk.CellRendererText()
-
-#- cellranderertoggle -------------------------------------------
-
-
-
-#- treeviewcolumn -------------------------------------------
-column = gtk.TreeViewColumn('URL', self.cell, text=0)
-column.set_title("Programming languages")
-column.pack_start(cell, True)
-column.set_attributes(cell, text=i)
-column.add_attribute(cell, 'text', 0)
-column.set_sort_column_id(i)
-
-#- treeview -------------------------------------------
-treeview = gtk.TreeView(liststore)
-treeview.append_column(column)
-treeview.set_search_column(0)
-treeview.set_reorderable(True)
-
-
 #- drag and drop -------------------------------------------
 self.treeview.enable_model_drag_source( gtk.gdk.BUTTON1_MASK,
                                         self.TARGETS,
@@ -116,9 +59,56 @@ def drag_data_received_data(self, treeview, context, x, y, selection,
         context.finish(True, True, etime)
     return
 
+#- treeview -------------------------------------------
+treeview = gtk.TreeView(liststore)
+treeview.append_column(column)
+treeview.set_search_column(0)
+treeview.set_reorderable(True)
+    #- liststore -------------------------------------------
+    bugdata="""120595 NEW Custom GtkTreeModelFilter wrappers need
+    121339 RESO dsextras.py installation directory is incorrect
+    121611 RESO argument is guint, should be guint32"""
+    for line in bugdata.split('\n'):
+        l = line.split()
+        self.liststore.append([int(l[0]), l[1], ' '.join(l[2:])])
 
-
-
-
-
-
+    self.liststore = gtk.ListStore(int, str, str)
+    self.b0.connect_object('clicked', gtk.ListStore.clear, self.liststore)
+    #- sort model -------------------------------------------
+    sortmodel = gtk.TreeModelSort(liststore)
+    sortmodel.set_sort_column_id(n, gtk.SORT_ASCENDING)
+    treeview = gtk.TreeView(win.sortmodel)
+    #- filter model -------------------------------------------
+    modelfilter = liststore.filter_new()
+    modelfilter.refilter()
+    modelfilter.set_visible_func(self.visible_cb, self.show_states)
+    def visible_cb(self, model, iter, data):
+        return model.get_value(iter, 1) in data
+    #- treestore -------------------------------------------
+    liststore = ListStore(gtk.gdk.Pixbuf, int, str, 'gboolean')
+    treestore = TreeStore(gtk.gdk.Pixbuf, int, str, 'gboolean')
+    treeiter = store.get_iter(path)
+    treeiter = store.get_iter_first()
+    treeiter = store.iter_next(iter)
+    treeiter = treestore.iter_children(parent)
+    treeiter = treestore.iter_nth_child(parent, n)
+    treeiter = treestore.iter_parent(child)
+    path = store.get_path(iter)
+    treerowref = TreeRowReference(model, path)
+    iter = append(parent, row=None)
+    iter = prepend(parent, row=None)
+    iter = insert(parent, position, row=None)
+    iter = insert_before(parent, sibling, row=None)
+    iter = insert_after(parent, sibling, row=None)
+  result = treestore.remove(iter)
+  treestore.clear()
+    #- treeviewcolumn -------------------------------------------
+    column = gtk.TreeViewColumn('URL', self.cell, text=0)
+    column.set_title("Programming languages")
+    column.pack_start(cell, True)
+    column.set_attributes(cell, text=i)
+    column.add_attribute(cell, 'text', 0)
+    column.set_sort_column_id(i)
+        #- cellranderertext -------------------------------------------
+        cell = gtk.CellRendererText()
+        #- cellranderertoggle -------------------------------------------
